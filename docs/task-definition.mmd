@@ -6,7 +6,7 @@ flowchart LR
 subgraph Local["Local Development"]
     User["Developer / User"]
     Code["Frontend + Backend Source Code"]
-    Dockerfile["Dockerfile (Frontend & Backend)"]
+    Dockerfile["Dockerfile for Frontend and Backend"]
 end
 
 %% ============================
@@ -20,8 +20,8 @@ end
 %% AWS ECS SECTION
 %% ============================
 subgraph ECS["AWS ECS (Fargate)"]
-    TaskDef["ECS Task Definition<br>(Container Blueprint)"]
-    FargateService["Fargate Service<br>(Runs Tasks)"]
+    TaskDef["ECS Task Definition (Blueprint for Containers)"]
+    FargateService["Fargate Service (Runs Task Instances)"]
 end
 
 %% ============================
@@ -34,13 +34,13 @@ FargateService -->|Serves App/API| User
 %% ============================
 %% STYLING (Soft Pastel Theme)
 %% ============================
-classDef dev fill:#e0f7fa,stroke:#0288d1,color:#01579b,stroke-width:1.5px;
-classDef code fill:#ede7f6,stroke:#5e35b1,color:#311b92,stroke-width:1.5px;
-classDef dockerfile fill:#f1f8e9,stroke:#558b2f,color:#33691e,stroke-width:1.5px;
+classDef dev fill:#d0f0fd,stroke:#0288d1,color:#01579b,stroke-width:1.5px;
+classDef code fill:#e6e0f8,stroke:#5e35b1,color:#311b92,stroke-width:1.5px;
+classDef dockerfile fill:#e6f4ea,stroke:#558b2f,color:#33691e,stroke-width:1.5px;
 
-classDef registry fill:#e3f2fd,stroke:#1e88e5,color:#0d47a1,stroke-width:1.5px;
+classDef registry fill:#d9e8fd,stroke:#1e88e5,color:#0d47a1,stroke-width:1.5px;
 
-classDef ecs fill:#fce4ec,stroke:#c2185b,color:#880e4f,stroke-width:1.5px;
+classDef ecs fill:#fde0eb,stroke:#c2185b,color:#880e4f,stroke-width:1.5px;
 classDef service fill:#fff3e0,stroke:#fb8c00,color:#e65100,stroke-width:1.5px;
 
 %% Apply styles
