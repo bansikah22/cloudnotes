@@ -1,0 +1,19 @@
+flowchart TD
+    subgraph Local_Dev
+        User["Developer/User"]
+        Code["Frontend + Backend Code"]
+        Dockerfile["Dockerfile (Frontend & Backend)"]
+    end
+
+    subgraph Container_Registry
+        DockerHub["Docker Hub"]
+    end
+
+    subgraph AWS_ECS
+        TaskDef["ECS Task Definition"]
+        FargateService["Fargate Service"]
+    end
+
+    User --> Code --> Dockerfile --> DockerHub
+    DockerHub --> TaskDef --> FargateService
+    FargateService -->|Serve App/API| User
