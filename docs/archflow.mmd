@@ -1,0 +1,105 @@
+flowchart TB
+
+%% ============================
+%% USER + GITHUB
+%% ============================
+subgraph GitHub["GitHub Repository"]
+    Repo["Frontend + Backend Code + Terraform"]
+end
+
+User(["User"])
+
+%% ============================
+%% CI/CD PIPELINE (NO TERRAFORM)
+%% ============================
+subgraph GitHub_Actions["GitHub Actions"]
+    CI["CI/CD Pipeline (Build & Push Docker Images)"]
+end
+
+%% ============================
+%% DOCKER HUB
+%% ============================
+subgraph DockerHub["Docker Hub"]
+    FrontImg["Frontend Docker Image"]
+    BackImg["Backend Docker Image"]
+end
+
+%% ============================
+%% AWS CLOUD
+%% ============================
+subgraph AWS["AWS Cloud"]
+
+    %% VPC outer box
+    subgraph VPC["VPC"]
+
+        %% PUBLIC SUBNET
+        subgraph PublicSubnet["Public Subnet"]
+            ALB["Application Load Balancer"]
+        end
+
+        %% PRIVATE SUBNET
+        subgraph PrivateSubnet["Private Subnet"]
+
+            %% ECS CLUSTER
+            subgraph ECS["ECS Cluster (Fargate)"]
+                FE["Frontend Service"]
+                BE["Backend Service"]
+            end
+
+        end
+
+    end
+
+    CW["CloudWatch Logs"]
+
+end
+
+%% ============================
+%% CONNECTIONS
+%% ============================
+
+%% User flow
+User --> ALB
+ALB --> FE
+FE --> BE
+
+%% GitHub → CI
+Repo --> CI
+
+%% CI builds & pushes images
+CI --> FrontImg
+CI --> BackImg
+
+%% Terraform NOT included in CI pipeline
+
+%% ECS pulls images
+FrontImg --> FE
+BackImg --> BE
+
+%% Logging
+FE --> CW
+BE --> CW
+
+%% ============================
+%% STYLES (Soft Pastel Theme)
+%% ============================
+classDef user fill:#e0f7fa,stroke:#0288d1,color:#01579b,stroke-width:1.5px;
+classDef repo fill:#ede7f6,stroke:#5e35b1,color:#311b92,stroke-width:1.5px;
+classDef ci fill:#e8f5e9,stroke:#43a047,color:#1b5e20,stroke-width:1.5px;
+classDef docker fill:#e3f2fd,stroke:#1e88e5,color:#0d47a1,stroke-width:1.5px;
+
+classDef aws fill:#fff3e0,stroke:#fb8c00,color:#e65100,stroke-width:1.5px;
+classDef subnet fill:#fffde7,stroke:#fbc02d,color:#f57f17,stroke-width:1.5px;
+classDef ecs fill:#f3e5f5,stroke:#8e24aa,color:#4a148c,stroke-width:1.5px;
+classDef logs fill:#fbe9e7,stroke:#d84315,color:#bf360c,stroke-width:1.5px;
+
+%% Apply classes
+class User user
+class Repo repo
+class CI ci
+class FrontImg,BackImg docker
+
+class AWS aws
+class PublicSubnet,PrivateSubnet subnet
+class ECS ecs
+class CW logs
