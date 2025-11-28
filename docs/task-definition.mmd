@@ -1,19 +1,54 @@
-flowchart TD
-    subgraph Local_Dev
-        User["Developer/User"]
-        Code["Frontend + Backend Code"]
-        Dockerfile["Dockerfile (Frontend & Backend)"]
-    end
+flowchart LR
 
-    subgraph Container_Registry
-        DockerHub["Docker Hub"]
-    end
+%% ============================
+%% LOCAL DEVELOPMENT SECTION
+%% ============================
+subgraph Local["Local Development"]
+    User["Developer / User"]
+    Code["Frontend + Backend Source Code"]
+    Dockerfile["Dockerfile (Frontend & Backend)"]
+end
 
-    subgraph AWS_ECS
-        TaskDef["ECS Task Definition"]
-        FargateService["Fargate Service"]
-    end
+%% ============================
+%% CONTAINER REGISTRY SECTION
+%% ============================
+subgraph Registry["Container Registry"]
+    DockerHub["Docker Hub (Stores Images)"]
+end
 
-    User --> Code --> Dockerfile --> DockerHub
-    DockerHub --> TaskDef --> FargateService
-    FargateService -->|Serve App/API| User
+%% ============================
+%% AWS ECS SECTION
+%% ============================
+subgraph ECS["AWS ECS (Fargate)"]
+    TaskDef["ECS Task Definition<br>(Container Blueprint)"]
+    FargateService["Fargate Service<br>(Runs Tasks)"]
+end
+
+%% ============================
+%% FLOW CONNECTIONS
+%% ============================
+User --> Code --> Dockerfile --> DockerHub
+DockerHub --> TaskDef --> FargateService
+FargateService -->|Serves App/API| User
+
+%% ============================
+%% STYLING (Soft Pastel Theme)
+%% ============================
+classDef dev fill:#e0f7fa,stroke:#0288d1,color:#01579b,stroke-width:1.5px;
+classDef code fill:#ede7f6,stroke:#5e35b1,color:#311b92,stroke-width:1.5px;
+classDef dockerfile fill:#f1f8e9,stroke:#558b2f,color:#33691e,stroke-width:1.5px;
+
+classDef registry fill:#e3f2fd,stroke:#1e88e5,color:#0d47a1,stroke-width:1.5px;
+
+classDef ecs fill:#fce4ec,stroke:#c2185b,color:#880e4f,stroke-width:1.5px;
+classDef service fill:#fff3e0,stroke:#fb8c00,color:#e65100,stroke-width:1.5px;
+
+%% Apply styles
+class User dev
+class Code code
+class Dockerfile dockerfile
+
+class DockerHub registry
+
+class TaskDef ecs
+class FargateService service
