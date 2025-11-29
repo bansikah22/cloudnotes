@@ -1,0 +1,39 @@
+{
+  "name": "cloudnotes",
+  "version": "1.0.0",
+  "description": "Full-Stack ToDo Notes Application deployed on AWS ECS Fargate",
+  "main": "index.ts",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "tsc --watch & nodemon --watch dist --ext js --exec \"node dist/index.js\""
+  },
+  "keywords": [
+    "notes",
+    "cloud",
+    "ecs",
+    "terraform",
+    "express",
+    "nodejs",
+    "typescript"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@types/uuid": "^10.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "http-errors": "^2.0.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "depcheck": "^1.4.7",
+    "nodemon": "^3.1.11",
+    "typescript": "^5.9.3"
+  }
+}
