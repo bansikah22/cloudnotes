@@ -23,21 +23,22 @@ variable "desired_count" {
 }
 
 variable "frontend_cpu" {
-  type    = string
-  default = "256"
+  description = "CPU units for frontend tasks (256, 512, 1024, etc.)"
+  type        = string
+  default     = "256"
 }
-
 variable "frontend_memory" {
-  type    = string
-  default = "512"
+  description = "Memory (MB) for frontend tasks (512, 1024, 2048, etc.)"
+  type        = string
+  default     = "512"
 }
-
 variable "backend_cpu" {
-  type    = string
-  default = "256"
+  description = "CPU units for backend tasks (256, 512, 1024, etc.)"
+  type        = string
+  default     = "256"
 }
-
 variable "backend_memory" {
-  type    = string
-  default = "512"
+  description = "Memory (MB) for backend tasks (512, 1024, 2048, etc.)"
+  type        = string
+  default     = "512"
 }
