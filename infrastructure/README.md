@@ -24,8 +24,8 @@ export AWS_REGION=us-east-1
 ```bash
 cd infrastructure
 terraform init
-terraform plan -out plan.tf
-terraform apply plan.tf
+terraform plan -out plan.tfplan
+terraform apply plan.tfplan
 ```
 
 Notes:
