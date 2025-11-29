@@ -1,4 +1,3 @@
-import { Priority } from "./models.js"
 import { v4 as uuidv4 } from 'uuid';
 import type { CreateNoteDto, UpdateNoteDto, Note } from "./models.js"
 import { notes } from "./models.js"
@@ -12,21 +11,11 @@ const createNote = (data: CreateNoteDto): Note => {
     throw new Error("Content is required");
   }
 
-  if (data.priority?.toLocaleLowerCase() !== Priority.Low.toLocaleLowerCase() &&
-    data.priority?.toLocaleLowerCase() !== Priority.Medium.toLocaleLowerCase() &&
-    data.priority?.toLocaleLowerCase() !== Priority.High.toLocaleLowerCase()) {
-    throw new Error("Priority must be Low, Medium, or High");
-  }
-
-  const newNote = {
+  const newNote: Note = {
     id: uuidv4(),
     title: data.title,
     content: data.content,
-    achieved: false,
-    priority: data.priority || Priority.Medium,
     createdAt: new Date().toISOString(),
-    ...(data.description && { description: data.description }),
-    ...(data.tags && { tags: data.tags }),
   };
 
   notes.push(newNote);
