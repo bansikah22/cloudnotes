@@ -10,15 +10,26 @@ router.get("/notes", (_req: express.Request, res: express.Response) => {
   res.json(notes);
 });
 
+router.get("/note/:id", (req: express.Request, res: express.Response) => {
+  const id = req.params['id']!;
+
+  console.log(`[GET]: /api/note/${id}`);
+  const note = notes.find((n: Note) => n.id === id);
+  if (!note) {
+    return res.status(404).json({ error: "Note not found" });
+  }
+  return res.json(note);
+});
+
 // Create a new note
 router.post("/notes", (req: express.Request, res: express.Response) => {
   console.log("[POST]: /api/notes");
   try {
     const newNote = createNote(req.body);
-    res.status(201).json(newNote);
+    return res.status(201).json(newNote);
   } catch (error: any) {
     console.error("Error creating note:", error);
-    res.status(400).json({ error: error.message || "Invalid note data" });
+    return res.status(400).json({ error: error.message || "Invalid note data" });
   }
 });
 
@@ -29,10 +40,10 @@ router.put("/notes/:id", (req: express.Request, res: express.Response) => {
   try {
     console.log(req.body);
     const updatedNote = updateNote(id, req.body);
-    res.json(updatedNote);
+    return res.status(200).json(updatedNote);
   } catch (error: any) {
     console.error("Error updating note:", error);
-    res.status(400).json({ error: error.message || "Invalid note data" });
+    return res.status(400).json({ error: error.message || "Invalid note data" });
   }
 });
 
@@ -46,16 +57,16 @@ router.delete("/notes/:id", (req: express.Request, res: express.Response) => {
       throw new Error("Note not found");
     }
     notes.splice(index, 1);
-    res.status(204).send();
+    return res.status(204).send();
   } catch (error: any) {
     console.error("Error deleting note:", error);
-    res.status(400).json({ error: error.message || "Invalid note data" });
+    return res.status(400).json({ error: error.message || "Invalid note data" });
   }
 });
 
 router.get("/health", (_req, res) => {
-  console.log("[GET}: /api/health")
-  res.status(200).json({ "status": "running" })
-})
+  console.log("[GET]: /api/health");
+  return res.status(200).json({ status: "running", uptime: `${Math.floor(process.uptime())}s` });
+});
 
 export default router;

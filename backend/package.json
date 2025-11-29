@@ -2,7 +2,7 @@
   "name": "cloudnotes",
   "version": "1.0.0",
   "description": "Full-Stack ToDo Notes Application deployed on AWS ECS Fargate",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "type": "module",
   "directories": {
     "doc": "docs"

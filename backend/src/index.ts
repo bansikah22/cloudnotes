@@ -15,6 +15,6 @@ app.get("/", (_req : express.Request, res : express.Response) => {
 // Mount all API routes under /api
 app.use("/api", notesRouter)
 
-app.listen(PORT, () => {
+app.listen(Number(PORT), HOST, () => {
     console.log(`Server is running on http://${HOST}:${PORT}`);
 });
