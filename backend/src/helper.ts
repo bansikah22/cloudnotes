@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from 'uuid';
-import type { CreateNoteDto, UpdateNoteDto, Note } from "./models.js"
-import { notes } from "./models.js"
+import type { CreateNoteDto, UpdateNoteDto, Note } from "./models.js";
+import { db } from "./models.js";
 
-const createNote = (data: CreateNoteDto): Note => {
+
+const createNote = async (data: CreateNoteDto): Promise<Note> => {
   if (!data.title || data.title.trim().length === 0) {
     throw new Error("Title is required");
   }
@@ -18,28 +19,29 @@ const createNote = (data: CreateNoteDto): Note => {
     createdAt: new Date().toISOString(),
   };
 
-  notes.push(newNote);
+  // Cache the new note
+  db.data.notes.push(newNote);
+  await db.write();
 
   return newNote;
 };
 
-const updateNote = (id: string, updateData: UpdateNoteDto): Note => {
-  const index = notes.findIndex((note) => note.id === id);
-
-  if (index === -1) {
-    throw new Error("Note not found");
+const updateNote = async (id: string, updateData: UpdateNoteDto): Promise<Note> => {
+  // Cache the updated note
+  db.data.notes = db.data.notes.map(note => 
+    note.id === id ? { ...note, ...updateData, updatedAt: new Date().toISOString() } : note
+  );
+  await db.write();
+  
+  const updatedNote = db.data.notes.find(note => note.id === id);
+  if (!updatedNote) {
+    throw new Error(`Note with id ${id} not found`);
   }
-
-  const existing = notes[index];
-
-  const updatedNote = {
-    ...existing,
-    ...updateData,
-    updatedAt: new Date().toISOString(),
-  } as Note;
-
-  notes[index] = updatedNote;
-  return updatedNote;
+  return { ...updatedNote, ...updateData } as Note;
 };
 
-export { createNote, updateNote };
+async function initDB() {
+  await db.read()
+}
+
+export { createNote, updateNote, initDB };

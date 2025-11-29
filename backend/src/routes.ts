@@ -1,20 +1,22 @@
 import express from "express"
 import { createNote, updateNote } from "./helper.js"
-import { notes } from "./models.js"
+import { db } from "./models.js"
 import type { Note } from "./models.js"
 const router = express.Router();
 
 // Get all notes
 router.get("/notes", (_req: express.Request, res: express.Response) => {
   console.log("[GET]: /api/notes");
-  res.json(notes);
+  res.json(
+    db.data.notes
+  );
 });
 
 router.get("/note/:id", (req: express.Request, res: express.Response) => {
   const id = req.params['id']!;
 
   console.log(`[GET]: /api/note/${id}`);
-  const note = notes.find((n: Note) => n.id === id);
+  const note = db.data.notes.find((n: Note) => n.id === id);
   if (!note) {
     return res.status(404).json({ error: "Note not found" });
   }
@@ -22,10 +24,10 @@ router.get("/note/:id", (req: express.Request, res: express.Response) => {
 });
 
 // Create a new note
-router.post("/notes", (req: express.Request, res: express.Response) => {
+router.post("/notes", async (req: express.Request, res: express.Response) => {
   console.log("[POST]: /api/notes");
   try {
-    const newNote = createNote(req.body);
+    const newNote = await createNote(req.body);
     return res.status(201).json(newNote);
   } catch (error: any) {
     console.error("Error creating note:", error);
@@ -34,12 +36,12 @@ router.post("/notes", (req: express.Request, res: express.Response) => {
 });
 
 // Update a note
-router.put("/notes/:id", (req: express.Request, res: express.Response) => {
+router.put("/notes/:id", async (req: express.Request, res: express.Response) => {
   const id = req.params['id']!;
   console.log(`[PUT]: /api/notes/${id}`);
   try {
     console.log(req.body);
-    const updatedNote = updateNote(id, req.body);
+    const updatedNote = await updateNote(id, req.body);
     return res.status(200).json(updatedNote);
   } catch (error: any) {
     console.error("Error updating note:", error);
@@ -48,15 +50,16 @@ router.put("/notes/:id", (req: express.Request, res: express.Response) => {
 });
 
 // Delete a note
-router.delete("/notes/:id", (req: express.Request, res: express.Response) => {
+router.delete("/notes/:id", async (req: express.Request, res: express.Response) => {
   const id = req.params['id']!;
   console.log(`[DELETE]: /api/notes/${id}`);
   try {
-    const index = notes.findIndex((note: Note) => note.id === id);
+    const index = db.data.notes.findIndex((note: Note) => note.id === id);
     if (index === -1) {
       throw new Error("Note not found");
     }
-    notes.splice(index, 1);
+    db.data.notes.splice(index, 1);
+    await db.write();
     return res.status(204).send();
   } catch (error: any) {
     console.error("Error deleting note:", error);
