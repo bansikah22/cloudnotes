@@ -1,5 +1,7 @@
 # CloudNotes
 
+![CI](https://github.com/bansikah22/cloudnotes/actions/workflows/ci.yaml/badge.svg)
+
 Full-Stack ToDo Notes Application deployed on AWS ECS Fargate.
 
 ![CloudNotes App](docs/images/deployed-app.png)
