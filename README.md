@@ -2,6 +2,8 @@
 
 Full-Stack ToDo Notes Application deployed on AWS ECS Fargate.
 
+![CloudNotes App](docs/images/deployed-app.png)
+
 ## Tech Stack
 - **Frontend**: React, Vite, TypeScript, Nginx (Docker)
 - **Backend**: Node.js, Express, TypeScript, Alpine (Docker)
@@ -70,3 +72,29 @@ To stop and remove the containers:
 ```bash
 docker compose down
 ```
+
+### 3. Deploy to AWS (Terraform)
+
+We use Terraform to provision the infrastructure on AWS (ECS Fargate, ALB, VPC).
+
+![ECS Cluster](docs/images/cluster.png)
+
+1.  **Build & Push Images**: Ensure your Docker images are pushed to Docker Hub.
+2.  **Deploy**:
+    ```bash
+    cd infrastructure
+
+    terraform init
+
+    terraform validate 
+    
+    terraform apply
+
+    ## when you are done destroy the cluster and everything 
+    terraform destroy --auto-approve
+    ```
+3.  **Access**: Use the `alb_dns_name` output from Terraform to access the app.
+
+![ECS Services](docs/images/services.png)
+
+For detailed deployment steps, see [docs/deployment.md](docs/deployment.md).

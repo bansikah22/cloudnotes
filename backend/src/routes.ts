@@ -4,6 +4,11 @@ import { db } from "./models.js"
 import type { Note } from "./models.js"
 const router = express.Router();
 
+// Health check
+router.get("/health", (_req: express.Request, res: express.Response) => {
+  res.status(200).json({ status: "ok" });
+});
+
 // Get all notes
 router.get("/notes", (_req: express.Request, res: express.Response) => {
   console.log("[GET]: /api/notes");
@@ -65,11 +70,6 @@ router.delete("/notes/:id", async (req: express.Request, res: express.Response) 
     console.error("Error deleting note:", error);
     return res.status(400).json({ error: error.message || "Invalid note data" });
   }
-});
-
-router.get("/health", (_req, res) => {
-  console.log("[GET]: /api/health");
-  return res.status(200).json({ status: "running", uptime: `${Math.floor(process.uptime())}s` });
 });
 
 export default router;

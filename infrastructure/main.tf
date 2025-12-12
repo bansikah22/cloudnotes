@@ -34,7 +34,7 @@ data "aws_availability_zones" "available" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 3.0"
+  version = "~> 5.0"
 
   name = "cloudnotes-vpc"
   cidr = "10.0.0.0/16"
@@ -271,6 +271,12 @@ locals {
           protocol      = "tcp"
         }
       ]
+      environment = [
+        {
+          name  = "NODE_ENV"
+          value = "production"
+        }
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -325,6 +331,8 @@ resource "aws_ecs_service" "frontend" {
     container_port   = 80
   }
 
+  health_check_grace_period_seconds = 60
+
   depends_on = [aws_lb_listener.http]
 }
 
@@ -347,5 +355,8 @@ resource "aws_ecs_service" "backend" {
     container_name   = "backend"
     container_port   = 5000
   }
-    depends_on = [aws_lb_listener_rule.api_path]
+
+  health_check_grace_period_seconds = 60
+
+  depends_on = [aws_lb_listener_rule.api_path]
 }

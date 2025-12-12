@@ -1,6 +1,6 @@
 import type { Note } from "./models";
 
-const BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+const BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
 export async function getNotes(): Promise<Note[]> {
   const res = await fetch(`${BASE}/notes`);

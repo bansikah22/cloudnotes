@@ -29,6 +29,10 @@ COPY --from=builder /app/dist ./dist
 
 # Create a non-root user
 RUN addgroup -S node && adduser -S node -G node
+
+# Set ownership of the application directory
+RUN chown -R node:node /app
+
 USER node
 
 EXPOSE 5000
