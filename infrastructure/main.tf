@@ -333,7 +333,7 @@ resource "aws_ecs_service" "frontend" {
 
   health_check_grace_period_seconds = 60
 
-  depends_on = [aws_lb_listener.http]
+ depends_on = [aws_lb_listener.http]
 }
 
 # Backend ECS Service (internal only)
@@ -355,6 +355,7 @@ resource "aws_ecs_service" "backend" {
     container_name   = "backend"
     container_port   = 5000
   }
+
 
   health_check_grace_period_seconds = 60
 
