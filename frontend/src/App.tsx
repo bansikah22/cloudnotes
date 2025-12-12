@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { getNotes, createNote, updateNote, deleteNote } from "./routes";
 import type { Note } from "./models";
 import NoteList from "./components/NoteList";
@@ -7,28 +7,28 @@ import NoteForm from "./components/NoteForm";
 export default function App() {
   const [notes, setNotes] = useState<Note[]>([]);
 
-  const load = useCallback(async () => {
-    const data = await getNotes();
-    setNotes(data);
+  useEffect(() => {
+    getNotes().then(setNotes);
   }, []);
 
-  useEffect(() => {
-    load();
-  }, [load]);
+  async function refresh() {
+    const data = await getNotes();
+    setNotes(data);
+  }
 
   async function handleCreate(noteData: Partial<Note>) {
     await createNote(noteData);
-    load();
+    await refresh();
   }
 
   async function handleUpdate(id: string, noteData: Partial<Note>) {
     await updateNote(id, noteData);
-    load();
+    await refresh();
   }
 
   async function handleDelete(id: string) {
     await deleteNote(id);
-    load();
+    await refresh();
   }
 
   return (

@@ -93,8 +93,11 @@ We use Terraform to provision the infrastructure on AWS (ECS Fargate, ALB, VPC).
     ## when you are done destroy the cluster and everything 
     terraform destroy --auto-approve
     ```
-3.  **Access**: Use the `alb_dns_name` output from Terraform to access the app.
-
+3.  **Services**: These are all the services that care been created
 ![ECS Services](docs/images/services.png)
+
+4. **Task definition**: Task definition as mentioned in the docs directory 
+![Task definition](docs/images/task-definition.png)
+
 
 For detailed deployment steps, see [docs/deployment.md](docs/deployment.md).
