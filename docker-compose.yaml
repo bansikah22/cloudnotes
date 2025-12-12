@@ -1,25 +1,15 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
     ports:
       - "5000:5000"
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       FRONTEND_URL: http://localhost:80
 
   frontend:
     build: ./frontend
     ports:
       - "80:80"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    environment:
-      VITE_API_BASE_URL: "http://localhost:5000/api"
     depends_on:
       - backend

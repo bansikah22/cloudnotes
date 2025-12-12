@@ -2,18 +2,25 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package*.json ./
+RUN npm ci
 
 COPY . .
 
-COPY .env .env
-
 RUN npm run build
 
-FROM nginx:alpine
+FROM alpine:latest
 
+RUN apk add --no-cache nginx
+
+# Create necessary directories for nginx
+RUN mkdir -p /run/nginx
+
+# Copy static assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/http.d/default.conf
 
 EXPOSE 80
 
