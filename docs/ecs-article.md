@@ -346,25 +346,25 @@ Once the deployment completes, Terraform outputs the ALB DNS name. You can acces
 
 The cluster dashboard shows your services and their status:
 
-![ECS Cluster](https://raw.githubusercontent.com/bansikah22/cloudnotes/main/docs/images/cluster.png)
+![ECS Cluster](./docs/images/cluster.png)
 
 ### Running Services
 
 Both frontend and backend services are running with their desired task counts:
 
-![ECS Services](https://raw.githubusercontent.com/bansikah22/cloudnotes/main/docs/images/services.png)
+![ECS Services](./docs/images/services.png)
 
 ### Task Definition
 
 The task definition view shows container configurations, resource allocations, and logging settings:
 
-![Task Definition](https://raw.githubusercontent.com/bansikah22/cloudnotes/main/docs/images/task-definition.png)
+![Task Definition](./docs/images/task-definition.png)
 
 ### The Running Application
 
 Access the application via the ALB DNS name to see CloudNotes in action:
 
-![Deployed App](https://raw.githubusercontent.com/bansikah22/cloudnotes/main/docs/images/deployed-app.png)
+![Deployed App](./docs/images/deployed-app.png)
 
 ---
 
